@@ -1,11 +1,12 @@
----
-title: "R Notebook"
-output: html_notebook
----
-run with R 4.2.1
+
+#takes in dataframes from python notebooks and generates pdf figures for paper figure 1 
+  #X-Y percent identity, GC content, human/dog/bull GC content
+
+
+#run with R 4.2.1
 
 #load libraries
-```{r}
+
 library(tidyr)
 library(ggplot2)
 library(ggpubr)
@@ -16,9 +17,8 @@ library(rstatix)
 library(gt)
 library(gtExtras)
 
-```
 #load files
-```{r} 
+
 g_p <- read.delim("/lab/solexa_page/hannah/220516_mpra/msa/long_alignments/g_p.txt") 
 gc <- read.delim("/lab/solexa_page/hannah/supp_info/tables/GC_1030.csv", sep = ",")[2:5]
 gc <- gc %>% filter(pairs != "NLGN4X_NLGN4Y" & pairs != "TXLNG_TXLNGY" & pairs != "TMSB4X_TMSB4Y")
@@ -29,9 +29,7 @@ perc <- perc %>% filter(pair != "NLGN4X_NLGN4Y" & pair != "TXLNG_TXLNGY" & pair 
 
 perc_scramble <- read.delim("/lab/solexa_page/hannah/supp_info/tables/percent_alignment_scramble.csv",sep = ",")[2:4]
 
-```
 #GC graphs
-```{r}
 
 stat.test <- gc %>% filter(GC_perc > 0 ) %>% group_by(region) %>%
   wilcox_test(GC_perc ~ gene, paired = TRUE) %>%
@@ -39,13 +37,9 @@ stat.test <- gc %>% filter(GC_perc > 0 ) %>% group_by(region) %>%
 
 
 gc1 <- gc %>% filter(GC_perc > 0)  %>% pivot_wider(names_from = "gene", values_from = "GC_perc") 
-
-# gc1_promoter <- gc1 %>% filter(region == "promoter")
-# wilcox_test_result <- wilcox.test(gc1_promoter$X_gene, gc1_promoter$Y_gene, paired = TRUE)
     
     
 pdf(file=("/lab/solexa_page/hannah/supp_info/figures/1D_GC_scatter.pdf"), width=3, height=1.5, colormodel = "rgb")
-
 gc1 %>% ggplot(aes(x=X_gene, y=Y_gene)) + 
   geom_point(stroke = 0) + 
   facet_grid(~region) + 
@@ -57,9 +51,8 @@ gc1 %>% ggplot(aes(x=X_gene, y=Y_gene)) +
 dev.off()
 
  
-```
+
 #graph percents
-```{r}
 
 perc$is_pair <- ifelse(perc$pair %in% g_p$pair, paste(perc$region, "yes"), paste(perc$region, "no"))
 perc_scramble$is_pair<- "promoter scram"
@@ -114,11 +107,9 @@ violin_plot +
   stat_pvalue_manual(pwc[c(1,2,5,8,9,10),],   label = "p.adj.signif", tip.length = 0.01, position = position_nudge(y = 0))
 dev.off()
 
-```
+
 
 #make table 1b
-```{r}
-
 
 tableb <- read.delim('/lab/solexa_page/hannah/220516_mpra/msa/long_alignments/pair_align/fig1b.txt', check.names = FALSE)
 tableb$`approximate divergence time (MYA)` <- NULL
@@ -135,25 +126,6 @@ table_gt <- tableb %>% gt() %>%
     label = "X-Y percent identity",
     columns = c(CDS, promoter)
   ) %>% 
-  
-  # cols_move_to_start(
-  #   columns = c(Year, Month, Day)
-  # ) |>
-  # cols_label(
-  #   Ozone = html("Ozone,<br>ppbV"),
-  #   Solar.R = html("Solar R.,<br>cal/m<sup>2</sup>"),
-  #   Wind = html("Wind,<br>mph"),
-  #   Temp = html("Temp,<br>&deg;F")
-  # )
-  #gt_theme_538() %>%
-   #text(font = "Helvetica Neue") %>% 
-  #gt_theme_espn() %>%
-  # data_color(
-  #   columns =c(4,5),
-  #   fn = scales::col_numeric(
-  #     palette = 'PuBu', 
-  #     domain = c(43,93)
-  #   )
   cols_align(
   align = c( "center"),
   columns = c(1, 2,3,4) 
@@ -164,10 +136,8 @@ gt::gtsave(table_gt, "my_table.docx") #can just drag into illustrator
 
 
 
-```
-
 #graph_rolling
-```{r}
+
 
 perc_rolling <- read.delim("/lab/solexa_page/hannah/supp_info/tables/perc_rolling_1208.csv", sep = ",")
 
@@ -181,10 +151,10 @@ perc_rolling %>% pivot_longer(perc_rolling, cols = c(5,6), names_to = "place", v
 
 dev.off()
 
-```
+
 
 #CpG content
-```{r}
+
 
 cpg <- read.delim("/lab/solexa_page/hannah/supp_info/tables/CpG_1127.csv", sep = ",")
 
@@ -201,11 +171,7 @@ cpg1 %>% ggplot(aes(x=X_gene, y=Y_gene)) +
   scale_x_continuous(limits = c(0.5, 1.2), expand = expansion(mult = c(0, 0))) + 
   scale_y_continuous(limits = c(0.5, 1.2), expand = expansion(mult = c(0, 0))) + 
   geom_abline(intercept = 0, slope = 1, linetype = "dashed")
-# ggplot(cpg, aes(x = CpG_norm, fill = gene)) +
-#   geom_histogram(position = "identity", alpha = 0.6, bins = 6) +
-#   labs(x = "Normalized CpG dinucleotide content", y = "number of genes") +
-#   scale_fill_manual(values = c("#e46915", "#857bc6")) +
-#   theme_pubr()
+
 dev.off()
 
 cpg1 <- cpg %>% select(!"CpG_norm" & !"X") %>% pivot_wider(names_from = "gene", values_from = "raw_cpGs") 
@@ -225,10 +191,10 @@ cpg1 %>% ggplot(aes(x=X_gene, y=Y_gene)) +
   geom_abline(intercept = 0, slope = 1, linetype = "dashed")
 dev.off()
 
-``` 
+
 
 #human-dog-bull
-```{r}
+
 perc_1 <- perc %>% filter(is_pair == "intron yes" | is_pair == "exon yes" | is_pair == "promoter yes")
 perc_1$is_pair <- NULL
 perc_1$species <- 'humanX:humanY'
@@ -274,10 +240,10 @@ violin_plot +
   stat_pvalue_manual(pwc %>% filter(region == "exon"),   label = "p.adj.signif", tip.length = 0.01, position = position_nudge(y = 5))
 dev.off()
 
-```
+
 
 #dog-bull GC percents
-```{r}
+
 
 gc_p <- read.delim('/lab/solexa_page/hannah/supp_info/tables/percent_GC_1211_dogbull.csv', sep = ",")[,2:5]
 
@@ -310,9 +276,9 @@ gc_ms1 %>% ggplot(aes(x=human, y=bull)) +
 
 dev.off()
 
-```
+
 #human/chicken promoter GC
-```{r}
+
 g_p <- read.delim("/lab/solexa_page/hannah/220516_mpra/msa/long_alignments/g_p.txt") 
 
 gc <- read.delim("/lab/solexa_page/hannah/supp_info/tables/GC_1030.csv", sep = ",")[2:5]
@@ -356,10 +322,10 @@ rbound_Y <- rbound %>% filter(xg == "y to y")
 wilcox_test_resultX <- wilcox.test(rbound_X$gc, rbound_X$GC_perc, paired = TRUE)
 wilcox_test_resultY <- wilcox.test(rbound_Y$gc, rbound_Y$GC_perc, paired = TRUE)
 
-```
+
 
 #human/opossum promoter GC
-```{r}
+
 g_p <- read.delim("/lab/solexa_page/hannah/220516_mpra/msa/long_alignments/g_p.txt") 
 
 gc <- read.delim("/lab/solexa_page/hannah/supp_info/tables/GC_1030.csv", sep = ",")[2:5]
@@ -420,6 +386,6 @@ rbound_Y <- rbound %>% filter(xg == "y to y")
 wilcox_test_resultX <- wilcox.test(rbound_X$gc, rbound_X$GC_perc, paired = TRUE)
 wilcox_test_resultY <- wilcox.test(rbound_Y$gc, rbound_Y$GC_perc, paired = TRUE)
 
-```
+
 
 

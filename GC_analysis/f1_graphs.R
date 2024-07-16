@@ -1,11 +1,8 @@
----
-title: "R Notebook"
-output: html_notebook
----
-run with R 4.2.1
+
+#run with R 4.2.1
 
 #load libraries
-```{r}
+
 library(tidyr)
 library(ggplot2)
 library(ggpubr)
@@ -16,9 +13,8 @@ library(rstatix)
 library(gt)
 library(gtExtras)
 
-```
 #load files
-```{r} 
+
 g_p <- read.delim("/lab/solexa_page/hannah/220516_mpra/msa/long_alignments/g_p.txt") 
 gc <- read.delim("/lab/solexa_page/hannah/supp_info/tables/GC_1030.csv", sep = ",")[2:5]
 gc <- gc %>% filter(pairs != "NLGN4X_NLGN4Y" & pairs != "TXLNG_TXLNGY" & pairs != "TMSB4X_TMSB4Y")
@@ -29,9 +25,7 @@ perc <- perc %>% filter(pair != "NLGN4X_NLGN4Y" & pair != "TXLNG_TXLNGY" & pair 
 
 perc_scramble <- read.delim("/lab/solexa_page/hannah/supp_info/tables/percent_alignment_scramble.csv",sep = ",")[2:4]
 
-```
 #GC graphs
-```{r}
 
 stat.test <- gc %>% filter(GC_perc > 0 ) %>% group_by(region) %>%
   wilcox_test(GC_perc ~ gene, paired = TRUE) %>%

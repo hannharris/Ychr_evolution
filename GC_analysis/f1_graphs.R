@@ -1,4 +1,8 @@
 
+#takes in dataframes from python notebooks and generates pdf figures for paper figure 1 
+  #X-Y percent identity, GC content, human/dog/bull GC content
+
+
 #run with R 4.2.1
 
 #load libraries

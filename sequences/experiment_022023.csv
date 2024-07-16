@@ -1,0 +1,3 @@
+Condition,Replicate,DNA_BC_F,DNA_UMI,DNA_BC_R,RNA_BC_F,RNA_UMI,RNA_BC_R
+Fib_7169,1,Fib_7169_gdna_R1_001.fastq.gz,Fib_7169_gdna_R2_001.fastq.gz,Fib_7169_gdna_R3_001.fastq.gz,Fib_7169_rna_R1_001.fastq.gz,Fib_7169_rna_R2_001.fastq.gz,Fib_7169_rna_R3_001.fastq.gz
+Fib7276,2,Fib7276_gdna_R1_001.fastq.gz,Fib7276_gdna_R2_001.fastq.gz,Fib7276_gdna_R3_001.fastq.gz,Fib7276_rna_R1_001.fastq.gz,Fib7276_rna_R2_001.fastq.gz,Fib7276_rna_R3_001.fastq.gz

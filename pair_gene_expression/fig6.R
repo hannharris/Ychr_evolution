@@ -3,7 +3,7 @@ title: "R Notebook"
 output: html_notebook
 ---
 #load files
-```{r}
+
 
 s2_asr <- read.delim('S2_ASR.txt')
 s6_asr <- read.delim('S6_ASR.txt')
@@ -11,9 +11,9 @@ s3_naqvi <- read.delim('Table_S3_naqvi.txt')
 
 s26 <- full_join(s2_asr, s6_asr, by = "Gene")
 
-```
+
 #split into lcl 
-```{r}
+
 
 s26_lcl <- s26 %>% filter(!is.na(deltaEx_LCL))
 nrow(s26_lcl %>% filter(Revisedstatus == 'Escape'))
@@ -29,9 +29,9 @@ s26_lcl_subject <- nrow(s26_lcl %>% filter(Revisedstatus == 'Subject' & NPX.NPY_
 s26_lcl_subject_XY <- nrow(s26_lcl %>% filter(Revisedstatus == 'Subject' & NPX.NPY_gene == TRUE))
 
 print(paste(s26_lcl_XY, "_", s26_lcl_escape, "_", s26_lcl_subject, "_", s26_lcl_subject_XY))
-```
+
 #split into fib 
-```{r}
+
 s26_lcl <- s26 %>% filter(!is.na(deltaEx_Fib))
 nrow(s26_lcl %>% filter(Revisedstatus == 'Escape'))
 nrow(s26_lcl %>% filter(Revisedstatus == 'Subject'))
@@ -50,4 +50,4 @@ print(paste(s26_lcl_XY, "_", s26_lcl_escape, "_", s26_lcl_subject, "_", s26_lcl_
 
 
 
-```
+

@@ -1,9 +1,6 @@
----
-title: "R Notebook"
-output: html_notebook
----
+
 #load packages
-```{r} 
+ 
 library(GenomicRanges)
 library(seqinr)
 library(dplyr)
@@ -12,19 +9,19 @@ library(stringr)
 library(ape)
 library(BSgenome.Hsapiens.UCSC.hg38)
 
-```
+
 #load files
-```{r}
+
 fimo_output <- read.delim("/lab/solexa_page/hannah/supp_info/tables/fimo-9.tsv") 
 fimo_output$target <- sapply(strsplit(fimo_output$motif_id, "_"), "[[", 1)
 fimo_output <- fimo_output %>% filter(q.value <= 0.05) %>% select("target", "sequence_name", "start", "stop") 
 colnames(fimo_output) <- c("target", "chrom", "start", "end")
 
 p_bed <- read.delim("/lab/solexa_page/hannah/220516_mpra/helen_start_sites/fantom.bed", header = FALSE)
-```
+
 
 #overlap promoters w TFs
-```{r}
+
 p_bed <- GRanges(seqnames = p_bed$V1, ranges = IRanges(start = p_bed$V2, end = p_bed$V3), metadata = p_bed$V4)
 
 fimo_output <- GRanges(seqnames = fimo_output$chrom, ranges = IRanges(start = fimo_output$start, end = fimo_output$end), metadata = fimo_output$target)
@@ -40,10 +37,10 @@ full_merge <- cbind(data.frame(overlapping_metadata2), data.frame(overlapping_me
 full_merge <- cbind(full_merge, overlapping_coordinates)
 colnames(full_merge) <- c("genes", "tfs", "seqnames", "start", "end", "width", "strand", "copy_tf")
 
-```
+
 
 #how many binding sites are  on the promoter 
-```{r}
+
 
 promoters <- read.delim('/lab/solexa_page/hannah/220516_mpra/helen_start_sites/fantom.bed', header = FALSE)
 colnames(promoters) <- c('chr', 'start', 'end', 'gene')
@@ -133,10 +130,10 @@ for (rowix in (1:nrow(promoters_by_twenty))){
 } 
 
 
-```
+
 
 #graph binding
-```{r}
+
 df_nous <- data.frame('genes' = genes, 'binders' = binders) 
 
 df_nous %<>% group_by(genes) %>% mutate(num_binders = n()) %>% select("genes", "num_binders") %>% unique()
@@ -163,10 +160,10 @@ m_a_g_p %>% ggplot(aes(x = type_of_gene, y = num_binders)) +
       annotate("text", x='X_gene', y = 28, label = paste("p =", format(stat.test$p.value, digits = 2))) 
 
 dev.off()
-```
+
 
 #motif overlap 
-```{r}
+
 g_p <- read.delim("/lab/solexa_page/hannah/220516_mpra/g_p.txt") %>% dplyr::rename('genes' = gene.x) %>% filter(pair != 'NLGN4X_NLGN4Y' &
                                                                                                                   pair != 'PRKX_PRKY' & 
                                                                                                                   pair != "TMSB4X_TMSB4Y" &
@@ -226,9 +223,9 @@ df_overlaps$percent <- df_overlaps$num_overlap / df_overlaps$total_factors *100
 my_comparisons <- list( c("FALSE", "TRUE"), c("x_to_x", "FALSE"), c("x_to_x", "TRUE"), c("x_to_x", "y_to_y") )
 df_overlaps <- unique(df_overlaps %>% select("num_overlap", "total_factors", "is_homolog", "percent"))
 
-```
+
 #graph motif overlap
-```{r}
+
 #Outliers assumption
 df_overlaps %>%
   group_by(is_homolog) %>%
@@ -269,10 +266,10 @@ ggplot(df_overlaps, aes(x=is_homolog, y=percent)) +
   theme_pubr()
 dev.off()
 
-```
+
 
 #get GC of each 50bp region tested (gc_vs_activity.Rmd)
-```{r}
+
 # Load the hg38 genome
 genome <- BSgenome.Hsapiens.UCSC.hg38
 
@@ -312,11 +309,11 @@ for (row in (1:nrow(full_fib))){
 
 full_fib$gc <- gcs
 
-```
+
 
 
 #correlate num motifs w activity 
-```{r}
+
 
 fib_mpra <-  read.delim("/lab/solexa_page/hannah/supp_info/tables/50bp_bed_test_counts_fullfib.txt") %>% filter(chr != "chr6" & chr != "chr7" & chr != "cmv")
 fib_mpra$coords <- paste0(fib_mpra$chr, ":", fib_mpra$start, "-", fib_mpra$end)
@@ -434,4 +431,4 @@ dev.off()
 #   scale_colour_manual(values = c("#e46915", "#857bc6")) +
 #   annotate("text", x = -2, y = 80, label = paste("p-value =", format(p_value, scientific = TRUE)))
 
-```
+

@@ -1,10 +1,6 @@
----
-title: "R Notebook"
-output: html_notebook
----
 
 #packages
-```{r}
+
 library(ggtree)
 library(rtracklayer)
 library(GenomicRanges)
@@ -19,19 +15,19 @@ getwd()
 library(utils)
 g_p <- read.delim("/lab/solexa_page/hannah/220516_mpra/msa/long_alignments/g_p.txt") 
 
-```
+
 #can delete
-```{r}
+
 gtf <- read.delim("/lab/solexa_page/hannah/supp_info/XY_gtf_w_introns_012924.txt") #w_introns_100923.txt")
 gtf2 <- read.delim("/lab/solexa_page/hannah/220516_mpra/XY_gtf_w_introns_100923.txt") %>% filter(gene_name != "TMSB4X" & gene_name != "TMSB4Y" & gene_name != "TXLNG" & gene_name != "TXLNGY" & gene_name != "NLGN4X" & gene_name != "NLGN4Y") #both GTF's are the same 
 
 gtf <- gtf %>% distinct()
 write.table(x = gtf, file = paste0("/lab/solexa_page/hannah/supp_info/tables/gtf.txt"), quote = FALSE, sep = "\t", row.names = FALSE)
 
-```
+
 
 #make gff 1030_final
-```{r} 
+ 
 list_of_GENES <- c("DDX3X", "DDX3Y", "EIF1AX", "EIF1AY", "KDM5C", "KDM5D", "KDM6A", "RPS4X", "RPS4Y1", "USP9X", "USP9Y", "UTY", "ZFX", "ZFY")
 list_of_start_coords <- c(41329348, 12900108, 20145838, 20571776, 53229207, 19748939, 44869175, 
                           72281248, 2837602, 
@@ -95,12 +91,12 @@ gtf1$c <- ifelse(gtf1$c == "CDS", "exon", gtf1$c)
 write.table(x = gtf1, file = paste0("/lab/solexa_page/hannah/220516_mpra/msa/long_alignments/", GENE, "_gtf_all103023.txt"), quote = FALSE, sep = "\t", row.names = FALSE, col.names = FALSE)
 }
 
-```
+
 
 
 
 #calculate pairwise distances 
-```{r}
+
 
 GENES = c("EIF1AX", "EIF1AY", "KDM5D" , "KDM5C","UTY", "KDM6A", "ZFY", "ZFX", "DDX3Y" ,"DDX3X", "USP9Y" , "USP9X", "RPS4Y1", "RPS4X") 
 
@@ -166,10 +162,10 @@ for (gene1 in GENES){
 #write.table(dist_dna_t, "/lab/solexa_page/hannah/220516_mpra/msa/long_alignments/multiz_7sp/dist_dna_t_1030.txt", quote = FALSE, row.names = FALSE)
 
 
-```
+
 
 #process dist_dna
-```{r}
+
 dist_dna_t <- read.delim("/lab/solexa_page/hannah/220516_mpra/msa/long_alignments/multiz_7sp/dist_dna_t_1030.txt",sep = " ") 
 dist_dna_t %<>% filter(type != 'intron') %<>% filter(type != 'promoter_a')
 dist_dna_t %<>% filter(gene != 'NLGN4X') %>% filter(gene != 'NLGN4Y') %>% filter(gene != 'TMSB4X') %>% filter(gene != 'TMSB4Y') %>% filter(gene != 'TXLNG') %>% filter(gene != 'TXLNGY')
@@ -224,9 +220,9 @@ merged_distances_1 %>% ggplot(aes(x = type, y = len_ratio_yvx)) + #color = speci
  # ylim(0,2.5)
 dev.off()
 
-```
+
 #calculate alpha
-```{r}
+
 dist_dna_t <- read.delim("/lab/solexa_page/hannah/220516_mpra/msa/long_alignments/multiz_7sp/dist_dna_t_1030.txt",sep = " ") 
 dist_dna_t %<>% filter(type != 'promoter_a')
 dist_dna_t %<>% filter(gene != 'NLGN4X') %>% filter(gene != 'NLGN4Y') %>% filter(gene != 'TMSB4X') %>% filter(gene != 'TMSB4Y') %>% filter(gene != 'TXLNG') %>% filter(gene != 'TXLNGY')
@@ -280,10 +276,10 @@ ggplot(merged_distances_1 %>%
   theme_pubr() 
 dev.off() 
 
-```
+
 
 #get_graphs_normalized_gc_exons
-```{r}
+
 
 dist_dna_t<- read.delim("/lab/solexa_page/hannah/220516_mpra/msa/long_alignments/multiz_7sp/dist_dna_t_1030.txt",sep = " ") 
 dist_dna_t %<>% filter(type != 'intron') %<>% filter(type != 'promoter_a')
@@ -425,9 +421,9 @@ dev.off()
 
 }
 
-```
+
 #stats on dist_norm
-```{r}
+
 
 #Outliers assumption
 dist_norm %>%
@@ -453,9 +449,9 @@ pwc$p.adj.sci <- format(pwc$p.adj, scientific = FALSE, digits = 3)
 
 pwc <- pwc %>%  add_xy_position(x = "region",dodge = 1,step.increase = .1)
 
-```
+
 #random introns
-```{r}
+
 
 
 GENES = c("USP9Y") 
@@ -505,10 +501,10 @@ ggplot(dist_dna_t1, aes(x = species2, y = average, color = length_r)) +
   ylab("subst./site")
 dev.off()
 
-```
+
 
 #get GC and alignment perc. through alignment
-```{r}
+
 
 GENES = c("USP9Y") 
 spec2 = c('chimp', 'gorilla', 'pileatedgibbon', 'orangutan',  'mac', 'marm') 
@@ -540,7 +536,7 @@ ggplot(gc_dist, aes(x = GC, y = dist)) +
   theme_pubr()
 dev.off()
 
-```
+
 
 
 

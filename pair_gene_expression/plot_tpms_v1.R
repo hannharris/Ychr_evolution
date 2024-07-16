@@ -1,9 +1,6 @@
----
-title: "R Notebook"
-output: html_notebook
----
+
 #packages
-```{r}
+
 library(edgeR)
 
 suppressPackageStartupMessages(library("limma"))
@@ -14,10 +11,10 @@ suppressPackageStartupMessages(library("ggplot2"))
 library(rstatix)
 library('tidyr')
 library('dplyr')
-```
+
 
 #metadata LCL
-```{r}
+
 #which cell type to analyze?
 myCell <- "LCL"
  
@@ -30,9 +27,9 @@ metadata$x_count <- metadata$x_count - 1
 metadata_myCell_male <- metadata[metadata$karyotype %in% c("XY") & metadata$cell_type == myCell & metadata$Technical_replicate == "N",]
 rownames(metadata_myCell_male) <- metadata_myCell_male$sample
 
-```
+
 #X + Y chromosome genes LCL
-```{r}
+
 
 load('/lab/page/adrianna/RNA-seq_to_share/20221021/Autosome_log2FoldChange_per_X_or_Y_calculations/txi_lcl.rda')
 txi_lcl <- as.data.frame(txi_lcl$abundance)
@@ -72,10 +69,10 @@ dev.off()
 
 merged_counts_by_sample_LCL <- merged_counts_by_sample
 
-```
+
 
 #metadata Fib
-```{r}
+
 #which cell type to analyze?
 myCell <- "Fib"
 
@@ -88,9 +85,9 @@ metadata$x_count <- metadata$x_count - 1
 metadata_myCell_male <- metadata[metadata$karyotype %in% c("XY") & metadata$cell_type == myCell & metadata$Technical_replicate == "N",]
 rownames(metadata_myCell_male) <- metadata_myCell_male$sample
 
-```
+
 #X + Y chromosome genes Fib
-```{r}
+
 
 load('/lab/page/adrianna/RNA-seq_to_share/20221021/Autosome_log2FoldChange_per_X_or_Y_calculations/txi_fib.rda')
 txi_fib <- as.data.frame(txi_fib$abundance)
@@ -129,10 +126,10 @@ ggplot(merged_counts_by_sample, aes(x=type_of_gene, y =
   theme(text = element_text(size = 12))  
 #dev.off()
 
-```
+
 
 #metadata skew XXY LCL
-```{r}
+
 
 g_p <- read.delim("/lab/solexa_page/hannah/220516_mpra/msa/long_alignments/g_p.txt")
 g_p <- g_p %>% filter(pair != "NLGN4X_NLGN4Y" & pair != "TMSB4X_TMSB4Y" & pair != "TXLNG_TXLNGY")
@@ -157,10 +154,10 @@ samples <- samples[!(samples %in% values_to_remove)]
 metadata_myCell_male <- metadata[metadata$sample %in% c(samples) & metadata$cell_type == myCell & metadata$Technical_replicate == "N",]
 rownames(metadata_myCell_male) <- metadata_myCell_male$sample
 
-```
+
 
 #skew X+Y chr genes 
-```{r}
+
 load('/lab/page/adrianna/RNA-seq_to_share/20221021/Autosome_log2FoldChange_per_X_or_Y_calculations/txi_lcl.rda') #the tri 21 samples dont make it into this RDA (why?) 
 txi_lcl_counts <- (txi_lcl$counts)
 txi_lcl_lenght <- txi_lcl$length
@@ -185,9 +182,9 @@ merged_counts_by_sample <- merge(merged_counts_by_sample, g_p, by = "gene.x")
 
 merged_counts_by_sample_LCL <- merged_counts_by_sample
 
-```
+
 #get Y expr LCL 
-```{r} 
+ 
 #which cell type to analyze?
 myCell <- "LCL"
 
@@ -227,9 +224,9 @@ y_gene_expr$name <- ifelse(y_gene_expr$type_of_gene == "X_gene", 'Xgene', 'Ygene
 y_gene_expr <- y_gene_expr %>% select("pair", "type_of_gene","name", "gene_expression")
 
 
-```
+
 #adjust by LCL AR  
-```{r}
+
 lcl_ar <- read.delim("/lab/solexa_page/hannah/adrianna_data_linear_reg/LCL/LCL_AR.txt") %>% filter(Gene %in% c(g_p$gene.x)) %>% filter(Sample %in% c(merged_counts_by_sample_LCL$sample))
 
 merged_counts_by_sample_LCL <- merged_counts_by_sample_LCL %>%
@@ -250,9 +247,9 @@ m_lcl_ar <- m_lcl_ar %>% select(c("pair","type_of_gene", "expr_from_Xi", "expr_f
 
 tog <- rbind(m_lcl_ar, y_gene_expr)
 
-```
+
 #stats and graph LCL 
-```{r}
+
 
 
 #Outliers assumption
@@ -298,10 +295,10 @@ dev.off()
 
 write.table(x = tog, file = "/lab/solexa_page/hannah/supp_info/tables/LCL_pairs_tpm.txt", quote = FALSE, sep = "\t", row.names = FALSE)
 
-```
+
 
 #metadata skew XXY FIB
-```{r}
+
 #which cell type to analyze?
 myCell <- "Fib"
 
@@ -321,10 +318,10 @@ metadata_myCell_male <- metadata[metadata$sample %in% c(samples) & metadata$cell
 rownames(metadata_myCell_male) <- metadata_myCell_male$sample
 
 
-```
+
 
 #skew X+Y chr genes 
-```{r}
+
 load('/lab/page/adrianna/RNA-seq_to_share/20221021/Autosome_log2FoldChange_per_X_or_Y_calculations/txi_fib.rda')
 txi_fib_counts <- (txi_fib$counts)
 txi_fib_lenght <- txi_fib$length
@@ -352,10 +349,10 @@ merged_counts_by_sample <- merge(merged_counts_by_sample, g_p, by = "gene.x")
 
 merged_counts_by_sample_Fib <- merged_counts_by_sample
 
-```
+
 
 #get Y expr Fib
-```{r}
+
 #which cell type to analyze?
 myCell <- "Fib"
 
@@ -389,10 +386,10 @@ write.table(x = y, file = "/lab/solexa_page/hannah/adrianna_data_linear_reg/std_
 y_gene_expr$name <- ifelse(y_gene_expr$type_of_gene == "X_gene", 'Xgene', 'Ygene')
 y_gene_expr <- y_gene_expr %>% select("pair", "type_of_gene","name", "gene_expression")
 
-```
+
 
 #adjust by Fib AR 
-```{r}
+
 lcl_ar <- read.delim("/lab/solexa_page/hannah/adrianna_data_linear_reg/fibroblast/Fib_AR.txt") %>% filter(Gene %in% c(g_p$gene.x)) %>% filter(Sample %in% c(merged_counts_by_sample_Fib$sample)) 
 
 merged_counts_by_sample_Fib <- merged_counts_by_sample_Fib %>%
@@ -412,10 +409,10 @@ m_lcl_ar <- m_lcl_ar %>% select(c("pair","type_of_gene", "expr_from_Xi", "expr_f
 
 tog <- rbind(m_lcl_ar, y_gene_expr)
 
-```
+
 
 #stats and graph FIB
-```{r}
+
 
 #Outliers assumption
 tog %>%
@@ -462,9 +459,9 @@ dev.off()
 
 write.table(x = tog, file = "/lab/solexa_page/hannah/supp_info/tables/Fib_pairs_TPM.txt", quote = FALSE, sep = "\t", row.names = FALSE)
 
-```
+
 #TPM  promoter activity LCL
-```{r}
+
 g_p <- read.delim("/lab/solexa_page/hannah/220516_mpra/msa/long_alignments/g_p.txt")
 g_p <- g_p %>% filter(pair != "NLGN4X_NLGN4Y" & pair != "TMSB4X_TMSB4Y" & pair != "TXLNG_TXLNGY")
 
@@ -522,9 +519,9 @@ ggplot(together, aes(x=areaY_areaX , y = Y_X)) +   geom_point() +
   geom_errorbar(aes(ymin = Y_X - std, ymax = Y_X + std), width = 0.01 )
 dev.off()
 
-```
+
 #TPM  promoter activity FIB
-```{r}
+
 g_p <- read.delim("/lab/solexa_page/hannah/220516_mpra/msa/long_alignments/g_p.txt")
 g_p <- g_p %>% filter(pair != "NLGN4X_NLGN4Y" & pair != "TMSB4X_TMSB4Y" & pair != "TXLNG_TXLNGY")
 
@@ -582,10 +579,10 @@ ggplot(together, aes(x=areaY_areaX , y = Y_X)) +   geom_point() +
 
 dev.off()
 
-```
+
 
 #ratio comparisons  fib
-```{r}
+
 auc_fib <- read.delim("/lab/solexa_page/hannah/supp_info/tables/aucsm_full_fib.txt")
 xy_counts <- read.delim('/lab/solexa_page/hannah/adrianna_data_linear_reg/std_fib_ratios.txt') %>% select(c("pair", "ratio"))
 xy_counts$type <- "YtoX"                                                                                                          #geTMM
@@ -628,9 +625,9 @@ xaxiy %>% ggplot(aes(x=pair,y=ratio, color = type)) +
 
 # mergeddf <- merge(merge_r, new_df, by = "pair") 
 
-``` 
+ 
 #ratio comparisons LCL
-```{r}
+
 auc_fib <-  read.delim("/lab/solexa_page/hannah/supp_info/tables/aucsm_lcl.txt")
 xy_counts <- read.delim('/lab/solexa_page/hannah/adrianna_data_linear_reg/std_LCL_ratios.txt') %>% select(c("pair", "ratio"))
 xy_counts$type <- "YtoX"                                                                              #geTMM
@@ -685,10 +682,10 @@ xaxiy %>% ggplot(aes(x=pair,y=ratio, color = type)) +
 # 
 # mergeddf <- merge(merge_r, new_df, by = "pair") 
 
-``` 
+ 
 
 #plot ratios of YvX expression in TPMS 
-```{r}
+
 
 fib_ratios <- read.delim('/lab/solexa_page/hannah/adrianna_data_linear_reg/std_fib_ratios.txt') #GeTMM 
 
@@ -711,7 +708,7 @@ ggplot(lcl_ratios, aes(x=pair,y = ratio)) +
 # dev.off()
 
 
-```
+
 
 
 

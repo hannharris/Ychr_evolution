@@ -109,19 +109,19 @@ ggplot(m_td %>% filter(type != "positive ctl" & type != "negative ctl" & gene !=
 dev.off()
 
 #histogram of n_bcs 
-pdf(file= paste0(myPath,"S10_rep1_fib_bcs.pdf"), width=4, height=4, colormodel = "rgb") 
+pdf(file= paste0(myPath,"/S10_rep1_fib_bcs.pdf"), width=4, height=4, colormodel = "rgb") 
 ggplot(m_td, aes(x=fib_1_n_obs_bc)) +
   geom_histogram() +
   stat_bin(bins = 50)+
   theme_pubclean()
 dev.off()
-pdf(file=paste0(myPath,"S10_fib_bcs.pdf"), width=4, height=4, colormodel = "rgb") 
+pdf(file=paste0(myPath,"/S10_fib_bcs.pdf"), width=4, height=4, colormodel = "rgb") 
 ggplot(m_td, aes(x=fib_2_n_obs_bc)) +
 geom_histogram() +
   stat_bin(bins = 50) +
   theme_pubclean()
 dev.off()
-pdf(file=paste0(myPath,"S10_lcl_bcs.pdf"), width=4, height=4, colormodel = "rgb") 
+pdf(file=paste0(myPath,"/S10_lcl_bcs.pdf"), width=4, height=4, colormodel = "rgb") 
 ggplot(m_td %>% filter(name!= 'no_BC'), aes(x=lcl_n_obs_bc)) +
 geom_histogram() +
   stat_bin(bins = 50) +
@@ -134,33 +134,31 @@ dev.off()
 
 #create dataframes 
 
-lcl_counts <- read.delim("/lab/solexa_page/hannah/220516_mpra/LCL_1_counts.tsv")
-lcl_50 <- write_50_df("/lab/solexa_page/hannah/supp_info/tables/lcl_50_1.txt", metadata, lcl_counts)
-lcl_200 <- write_200_df("/lab/solexa_page/hannah/supp_info/tables/lcl_200.txt", metadata, lcl_counts)
+lcl_counts <- read.delim(paste0(myPath, "/tables/LCL_1_counts.tsv")
+lcl_50 <- write_50_df(paste0(myPath, "/tables/lcl_50_1.txt"), metadata, lcl_counts)
+lcl_200 <- write_200_df(paste0(myPath, "/tables/lcl_200.txt"), metadata, lcl_counts)
 
-fib_1_50 <- write_50_df("/lab/solexa_page/hannah/supp_info/tables/fib_1_50_1.txt", metadata, fib_counts_1)
-fib_2_50 <- write_50_df("/lab/solexa_page/hannah/supp_info/tables/fib_2_50_1.txt", metadata, fib_counts_2)
-full_fib_50 <- write_50_df("/lab/solexa_page/hannah/supp_info/tables/full_fib_50_1.txt", metadata, full_fib)
-fib_1_200 <- write_200_df("/lab/solexa_page/hannah/supp_info/tables/fib_1_200_1.txt", metadata, fib_counts_1)
-fib_2_200 <- write_200_df("/lab/solexa_page/hannah/supp_info/tables/fib_2_200_1.txt", metadata, fib_counts_2)
-full_fib_200 <- write_200_df("/lab/solexa_page/hannah/supp_info/tables/full_fib_200_1.txt", metadata, full_fib)
+fib_1_50 <- write_50_df(paste0(myPath, "/tables/fib_1_50_1.txt"),  metadata, fib_counts_1)
+fib_2_50 <- write_50_df(paste0(myPath, "/tables/fib_2_50_1.txt"),  metadata, fib_counts_2)
+full_fib_50 <- write_50_df(paste0(myPath, "/tables/full_fib_50_1.txt"), metadata, full_fib)
+fib_1_200 <- write_200_df(paste0(myPath, "/tables/fib_1_200_1.txt"), metadata, fib_counts_1)
+fib_2_200 <- write_200_df(paste0(myPath, "/tables/fib_2_200_1.txt"), metadata, fib_counts_2)
+full_fib_200 <- write_200_df(paste0(myPath, "/tables/full_fib_200_1.txt"), metadata, full_fib)
 
 
 #load dataframes 
 
-lcl_50 <- read.delim("/lab/solexa_page/hannah/supp_info/tables/lcl_50_1.txt")
-lcl_200 <- read.delim("/lab/solexa_page/hannah/supp_info/tables/lcl_200.txt")
-fib_1_50 <- read.delim("/lab/solexa_page/hannah/supp_info/tables/fib_1_50_1.txt")
-fib_2_50 <- read.delim("/lab/solexa_page/hannah/supp_info/tables/fib_2_50_1.txt")
-full_fib_50 <- read.delim("/lab/solexa_page/hannah/supp_info/tables/full_fib_50_1.txt")
-fib_1_200 <- read.delim("/lab/solexa_page/hannah/supp_info/tables/fib_1_200_1.txt")
-fib_2_200 <- read.delim("/lab/solexa_page/hannah/supp_info/tables/fib_2_200_1.txt")
-full_fib_200 <- read.delim("/lab/solexa_page/hannah/supp_info/tables/full_fib_200_1.txt")
-
+lcl_50 <- read.delim(paste0(myPath, "/tables/lcl_50_1.txt")) 
+lcl_200 <- read.delim(paste0(myPath, "/tables/lcl_200.txt") ) 
+fib_1_50 <- read.delim(paste0(myPath, "/tables/fib_1_50_1.txt")) 
+fib_2_50 <- read.delim(paste0(myPath, "/tables/fib_2_50_1.txt")) 
+full_fib_50 <- read.delim(paste0(myPath, "/tables/full_fib_50_1.txt")) 
+fib_1_200 <- read.delim(paste0(myPath, "/tables/fib_1_200_1.txt")) 
+fib_2_200 <- read.delim(paste0(myPath, "/tables/fib_2_200_1.txt")) 
+full_fib_200 <- read.delim(paste0(myPath, "/tables/full_fib_200_1.txt")) 
 
 
 #get distances for control plots and for graphing controls based on distance to TSS
-
 
 lcl_50_dist <- get_dist_TSS(lcl_50, start_sites)
 lcl_200_dist <- get_dist_TSS(lcl_200, start_sites)
@@ -169,9 +167,9 @@ full_fib_200_dist <- get_dist_TSS(full_fib_200, start_sites)
 
 make_bedgraph(full_fib_50_dist, file_name, column_to_sep)
 
-#graph controls HERE WITH THE EDITING
+#graph controls
 
-pdf(file= ("/lab/solexa_page/hannah/supp_info/figures/4B_fib_ctls.pdf"), width=4, height=4, colormodel = "rgb")
+pdf(file= (paste0(myPath, "/4B_fib_ctls.pdf") )
 
 full_fib_dist_200_1 <- full_fib_200_dist %>% filter(distance < 500 & distance > -500)
 res.kruskal <- full_fib_dist_200_1 %>% kruskal_test(log2 ~ type)
@@ -186,7 +184,7 @@ full_fib_dist_200_1$type = factor(full_fib_dist_200_1$type, levels=c('negative c
 ggviolin(full_fib_dist_200_1, x = "type", y = "log2", trim = TRUE) + stat_pvalue_manual(pwc,   label = "p.adj.signif", tip.length = 0.01, position = position_nudge(y = 0)) + stat_boxplot( width = 0.1)
 dev.off()
 
-pdf(file=("/lab/solexa_page/hannah/supp_info/figures/S11_lcl_ctls.pdf"), width=4, height=4, colormodel = "rgb")
+pdf(file=(paste0(myPath, "/S11_lcl_ctls.pdf") ) , width=4, height=4, colormodel = "rgb")
 
 lcl_200_dist_1 <- lcl_200_dist %>% filter(distance < 500 & distance > -500)
 res.kruskal <- lcl_200_dist_1 %>% kruskal_test(log2 ~ type)
@@ -205,12 +203,8 @@ dev.off()
 
 #graph promoters
 
-# per_pair_dist_graphs(full_fib_200_dist, 500, 'test100fib', gene_pairs)
-# per_pair_dist_graphs(lcl_200_dist, 500, 'test100lcl', gene_pairs)
-
 per_pair_dist_graphs(lcl_50_dist, 500, "S12", gene_pairs)
 per_pair_dist_graphs(full_fib_50_dist, 500, "5A", gene_pairs)
-
 per_pair_dist_graphs(full_fib_50_dist, 500, "5A_noerror", gene_pairs)
 
 
@@ -225,11 +219,11 @@ aucsm_lcl <- get_AUC(lcl_200_dist, 500, gene_pairs)
 aucsm_full_fib <- get_AUC(full_fib_50_dist, 500, gene_pairs)
 aucsm_lcl <- get_AUC(lcl_50_dist, 500, gene_pairs)
 
-write.table(x = aucsm_full_fib, file = "/lab/solexa_page/hannah/supp_info/tables/aucsm_full_fib.txt", quote = FALSE, sep = "\t", row.names = FALSE)
-write.table(x = aucsm_lcl, file = "/lab/solexa_page/hannah/supp_info/tables/aucsm_lcl.txt", quote = FALSE, sep = "\t", row.names = FALSE)
+write.table(x = aucsm_full_fib, file = paste0(myPath, "/tables/aucsm_full_fib.txt", quote = FALSE, sep = "\t", row.names = FALSE)
+write.table(x = aucsm_lcl, file = paste0(myPath, "/tables/aucsm_lcl.txt"), quote = FALSE, sep = "\t", row.names = FALSE)
 
-plot_AUC(aucsm_full_fib, '/lab/solexa_page/hannah/supp_info/figures/5C_auc_scatter_fib.pdf', 620, 620)
-plot_AUC(aucsm_lcl, '/lab/solexa_page/hannah/supp_info/figures/S13_auc_scatter_lcl.pdf', 1000, 1000)
+plot_AUC(aucsm_full_fib, paste0(myPath, '/5C_auc_scatter_fib.pdf'), 620, 620)
+plot_AUC(aucsm_lcl, paste0(myPath, '/S13_auc_scatter_lcl.pdf') , 1000, 1000)
 
 
 
@@ -242,14 +236,14 @@ lcl_50_dist1 <- lcl_50_dist %>% filter(distance < 100 & distance > -300)
 
 max_lcl <- max_peak(lcl_50_dist1)
 
-write.table(x = max_full_fib, file = "/lab/solexa_page/hannah/supp_info/tables/max_full_fib.txt", quote = FALSE, sep = "\t", row.names = FALSE) #redo this
-write.table(x = max_lcl, file = "/lab/solexa_page/hannah/supp_info/tables/max_lcl.txt", quote = FALSE, sep = "\t", row.names = FALSE) #redo this
+write.table(x = max_full_fib, file = paste0(myPath, "/tables/max_full_fib.txt"), quote = FALSE, sep = "\t", row.names = FALSE) #redo this
+write.table(x = max_lcl, file = paste0(myPath, "/tables/max_lcl.txt"), quote = FALSE, sep = "\t", row.names = FALSE) #redo this
 
 max_full_fib <- merge(max_full_fib, gene_pairs, by = 'gene')
 max_lcl <- merge(max_lcl, gene_pairs, by = 'gene')
 
-plot_maxpeak(max_full_fib, '/lab/solexa_page/hannah/supp_info/figures/5_maxpeak_fib.pdf', 2, 2)
-plot_maxpeak(max_lcl, '/lab/solexa_page/hannah/supp_info/figures/S13_maxpeak_lcl.pdf', 2.5, 2.5)
+plot_maxpeak(max_full_fib, paste0(myPath, '/5_maxpeak_fib.pdf'), 2, 2)
+plot_maxpeak(max_lcl, paste0(myPath, '/S13_maxpeak_lcl.pdf'), 2.5, 2.5)
 
 
 
@@ -316,7 +310,7 @@ bound_tog <- rbind(full_fib_50_dist_5hun_g,lcl_50_dist_5hun_g)
 bound_tog <- bound_tog %>% group_by(celltype) %>%
   mutate(gene = reorder(gene, up_frac))
 
-pdf(file=("/lab/solexa_page/hannah/supp_info/figures/frac_AUC_TSS.pdf"), width=6, height=4, colormodel = "rgb")
+pdf(file=(paste0(myPath, "/frac_AUC_TSS.pdf"), width=6, height=4, colormodel = "rgb")
 
 ggplot(bound_tog, aes(x=gene, y = up_frac, fill = celltype)) +
   geom_col(position = "dodge") + 

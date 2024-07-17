@@ -203,9 +203,9 @@ dev.off()
 
 #graph promoters
 
-per_pair_dist_graphs(lcl_50_dist, 500, "S12", gene_pairs)
-per_pair_dist_graphs(full_fib_50_dist, 500, "5A", gene_pairs)
-per_pair_dist_graphs(full_fib_50_dist, 500, "5A_noerror", gene_pairs)
+per_pair_dist_graphs(lcl_50_dist, 500, "S12", gene_pairs, myPath)
+per_pair_dist_graphs(full_fib_50_dist, 500, "5A", gene_pairs, myPath)
+per_pair_dist_graphs(full_fib_50_dist, 500, "5A_noerror", gene_pairs, myPath)
 
 
 

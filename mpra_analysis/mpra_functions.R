@@ -155,12 +155,12 @@ get_dist_TSS <- function(lcl_50, start_sites){
 #graph promoters
 
 
-per_pair_dist_graphs <- function(distance_df, distance_cutoff, cell_type, gene_pairs){
+per_pair_dist_graphs <- function(distance_df, distance_cutoff, cell_type, gene_pairs, myPath){
 
   promoters_dist1 <<- distance_df %>% filter(distance < distance_cutoff & distance > (-1*distance_cutoff))
   meg_dist_g_p <<- merge(promoters_dist1, gene_pairs, by = "gene") 
   
-  filename = paste("/lab/solexa_page/hannah/supp_info/figures/", cell_type, ".pdf", sep = "")
+  filename = paste(myPath, "/", cell_type, ".pdf", sep = "")
   pdf(file=(filename), width=6, height=6, colormodel = "rgb")
   print(ggplot(meg_dist_g_p, aes(x=distance, y=log2, color = type_of_gene)) +  #, shape =TSS_num
     geom_line() + 

@@ -1,13 +1,10 @@
----
-title: "mpra functions"
-output: html_notebook
----
+
 #write_50_df
-```{r}
+
 write_50_df <- function(filename, metadata, dataframe){
 merged <- merge(metadata, dataframe, by = "name")
 merged <- merged %>% filter(type != "negative ctl")
-merged <- merged %>% filter(n_obs_bc > 1) #n_obs > 2 
+merged <- merged %>% filter(n_obs_bc > 1) 
 fib_1_50 <<- calculate_50bp_windows(merged, metadata, "counts") #this also saves a BED file
 #colnames(fib_1_50)[colnames(fib_1_50) == "OG_coords"] <- "name"
 m_join <<- left_join(fib_1_50, metadata, by = "name" )
@@ -17,12 +14,12 @@ write.table(x = m_join, file = filename, quote = FALSE, sep = "\t",  row.names =
 
 return(fib_1_50)
 }
-```
+
 #write_200_df
-```{r}
+
 write_200_df <- function(filename, metadata, dataframe){
 merged <- merge(metadata, dataframe, by = "name")
-merged <<- merged %>% filter(n_obs_bc > 1) #n_obs > 2 
+merged <<- merged %>% filter(n_obs_bc > 1) 
 
 
 m_join <- merged[,c("name", "gene", "orientation", "type", "log2")]
@@ -32,10 +29,10 @@ write.table(x = m_join, file = filename, quote = FALSE, sep = "\t",  row.names =
 return(m_join)
 }
 
-```
+
 
 #make bed
-```{r}
+
 make_bedgraph <- function(input_file, file_name, column_to_sep){
   #input needs to have distances (so you can get rid of the shuff seqeucnes)
   #function removes CMV 
@@ -61,11 +58,11 @@ make_bedgraph <- function(input_file, file_name, column_to_sep){
   return(list(bed, new_bed))
 }
 
-```
+
 #calculate_50bp_windows
-```{r}
+
 calculate_50bp_windows <- function(input_file, metadata, cell_type){ #metadata,
-  #takes in a file like lcl_distances, metadata (new_meta_), and the cell type 
+  #takes in a file like lcl_distances, metadata, and the cell type 
   #creates a bed file
   #saves two files - a bedgraph of the log2 for every 50bp and also a file with genes, coords, annotation of direction of gene for future distance calculations 
 
@@ -109,8 +106,8 @@ for (coord in coord_options){
 }
 sd_df <- data.frame('coords' = coordins, 'sd' = sds)
 
-
-get_averages <- fifty_bases_df_to_avg %>% pivot_wider(names_from = coords, values_from = log2, values_fn = function(x){mean(x,na.rm = T)}) #check to make sure this actually works correctly 
+#gets the averages
+get_averages <- fifty_bases_df_to_avg %>% pivot_wider(names_from = coords, values_from = log2, values_fn = function(x){mean(x,na.rm = T)}) 
 
 fifty_bp_avg <<- get_averages %>% pivot_longer(cols = 1:length(get_averages), names_to = "coords", values_to = "log2")
 
@@ -134,10 +131,10 @@ fifty_bp_averages_w_genenames <<- merge(fifty_bp_averages_w_genenames, metadata,
 return(fifty_bp_averages_w_genenames)
 }
 
-```
+
 
 #distance from TSS 
-```{r}
+
 
 get_dist_TSS <- function(lcl_50, start_sites){
   
@@ -153,17 +150,17 @@ get_dist_TSS <- function(lcl_50, start_sites){
   return(lcl_1_dist)
 
 }
-```
+
 
 #graph promoters
-```{r}
 
-per_pair_dist_graphs <- function(distance_df, distance_cutoff, cell_type, gene_pairs){
+
+per_pair_dist_graphs <- function(distance_df, distance_cutoff, cell_type, gene_pairs, myPath){
 
   promoters_dist1 <<- distance_df %>% filter(distance < distance_cutoff & distance > (-1*distance_cutoff))
   meg_dist_g_p <<- merge(promoters_dist1, gene_pairs, by = "gene") 
   
-  filename = paste("/lab/solexa_page/hannah/supp_info/figures/", cell_type, ".pdf", sep = "")
+  filename = paste(myPath, "/", cell_type, ".pdf", sep = "")
   pdf(file=(filename), width=6, height=6, colormodel = "rgb")
   print(ggplot(meg_dist_g_p, aes(x=distance, y=log2, color = type_of_gene)) +  #, shape =TSS_num
     geom_line() + 
@@ -177,10 +174,10 @@ per_pair_dist_graphs <- function(distance_df, distance_cutoff, cell_type, gene_p
 
 }
 
-```
+
 
 #get AUC
-```{r}
+
 get_AUC <- function(promoters_dist1, distance_cutoff, gene_pairs) {
   #finds AUC values for each X-Y gene pair, returns a df of those values
   lcl_distance_cropped <<- promoters_dist1 %>% filter(distance < distance_cutoff & distance > (-1*distance_cutoff))
@@ -205,10 +202,10 @@ get_AUC <- function(promoters_dist1, distance_cutoff, gene_pairs) {
   
   return(aucsm)
 }
-```
+
 
 #plot AUC
-```{r}
+
 
 plot_AUC <- function(f_auc, filename, xmax, ymax){
   
@@ -237,9 +234,9 @@ pdf(file=(filename), width=2.3, height=2.3, colormodel = "rgb")
 }
 
 
-```
+
 #get maxpeak
-```{r}
+
 
 max_peak <- function(lcl_sub){
  # lcl_sub <- full_fib_50_dist1
@@ -258,9 +255,9 @@ max_peak <- function(lcl_sub){
   return(lcl_subsetted_peaks_top)
 }
 
-```
+
 #plot maxpeak
-```{r}
+
 
 plot_maxpeak <- function(f_auc, filename, xmax, ymax){
  # f_auc <- max_full_fib
@@ -290,7 +287,7 @@ pdf(file=(filename), width=2.3, height=2.3, colormodel = "rgb")
 #dev.off()
 }
 
-```
+
 
 
 

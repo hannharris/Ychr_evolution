@@ -1,22 +1,20 @@
----
-title: "R Notebook"
-output: html_notebook
----
 
 #load files 
-```{r}
+
 library(GenomicRanges)
 library(dplyr)
 library(tidyr)
 
-gtf_file <- read.delim("/lab/solexa_page/hannah/220516_mpra/XY_gtf_w_introns_100923.txt")
+myPath = #PATH TO GITHUB FOLDER
 
-gtf_file_promoters <- read.delim('/lab/solexa_page/hannah/220516_mpra/helen_start_sites/fantom.bed', header = FALSE)
+gtf_file <- read.delim(paste0(myPath, "/tables/XY_gtf_w_introns_012924.txt"))  #same gtf XY_gtf_w_introns_100923.txt
+
+gtf_file_promoters <- read.delim(paste0(myPath, "/tables/fantom.bed", header = FALSE)) 
 
 
-```
+
 #bed file
-```{r}
+
 genes <- c("DDX3X", "DDX3Y", "EIF1AX", "EIF1AY", "KDM5C", "KDM5D", "KDM6A", "RPS4X", "RPS4Y1", "USP9X", "USP9Y", "UTY", "ZFX", "ZFY")
 types <- c("intron", 'CDS')
 
@@ -40,4 +38,3 @@ for (gene in genes){
   write.table(x = bed2, file = paste0("/lab/solexa_page/hannah/1000genomes/bedfiles/", gene, "_", "promoter", "_0206.bed"), quote = FALSE, sep = "\t", row.names = FALSE, col.names = FALSE)
 }
 
-```

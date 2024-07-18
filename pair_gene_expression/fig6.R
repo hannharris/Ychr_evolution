@@ -1,13 +1,9 @@
----
-title: "R Notebook"
-output: html_notebook
----
+
 #load files
 
 
 s2_asr <- read.delim('S2_ASR.txt')
 s6_asr <- read.delim('S6_ASR.txt')
-s3_naqvi <- read.delim('Table_S3_naqvi.txt')
 
 s26 <- full_join(s2_asr, s6_asr, by = "Gene")
 

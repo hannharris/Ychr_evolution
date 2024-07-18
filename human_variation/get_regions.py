@@ -65,9 +65,7 @@ genes = [ "TXLNG", "TXLNGY","EIF1AX", "EIF1AY", "KDM5D" , "KDM5C","UTY", "KDM6A"
 regions = ["promoter", "exon", "intron"]
 
 for gene in genes:
-    print(gene)
     for region in regions:
-        print(region)
         new_txt = myPath + "/vcfs_gnomad/" + gene + "." + region +  ".vcf" 
         try:
             each_variant_df = count_num_positions(new_txt)
@@ -84,16 +82,8 @@ for gene in genes:
         sum_len = sum(subtr_vals)
         each_variant_df['sum_len'] = sum_len
 
-        #seqlen.append(sum_len)
-
-        #new_row = pd.DataFrame([{'gene':gene, 'region':region, 'numbervar':len(each_variant_df), 'seqlen':sum_len}])
-        #print(new_row)
-
-        #summary_table = pd.concat([summary_table, new_row])
-
         all_variants = pd.concat([all_variants, each_variant_df])
 
-        #each_variant_df['region'] = region
 print(all_variants)
 
 all_variants.to_csv("variants_gnomad.csv")

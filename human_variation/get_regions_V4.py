@@ -15,13 +15,15 @@ import random
 from Bio.SeqRecord import SeqRecord
 from Bio.Seq import Seq 
 
-# Function to extract sequences from a BED file
+myPath = #PATH TO GITHUB FOLDER
+
 def open_genome(genome_file):
     with open(genome_file, 'r') as genome_handle:
         genome = SeqIO.to_dict(SeqIO.parse(genome_handle, 'fasta'))
         print('opened genome')
         return genome
-
+        
+# Function to extract sequences from a BED file
 def extract_sequences_from_bed(bed_file, genome):
     sequences = []
     with open(bed_file, 'r') as bed_handle:
@@ -39,60 +41,24 @@ def extract_sequences_from_bed(bed_file, genome):
 
 def count_num_positions(txt_name):
 
-    #FOR GNOMAD DATA 
-
     #takes filepath (txt_name) and counds up the number of variants
-        #returns the number of bases that have variation
+    #returns the number of bases that have variation
     vcf_reader = vcf.Reader(filename=txt_name)
 
     # Iterate through the records in the VCF file
-   # positions = []
-   # n_alt = []
-    #vep = []
+ 
     vep_categories = "Allele|Consequence|IMPACT|SYMBOL|Gene|Feature_type|Feature|BIOTYPE|EXON|INTRON|HGVSc|HGVSp|cDNA_position|CDS_position|Protein_position|Amino_acids|Codons|ALLELE_NUM|DISTANCE|STRAND|VARIANT_CLASS|MINIMISED|SYMBOL_SOURCE|HGNC_ID|CANONICAL|TSL|APPRIS|CCDS|ENSP|SWISSPROT|TREMBL|UNIPARC|GENE_PHENO|SIFT|PolyPhen|DOMAINS|HGVS_OFFSET|MOTIF_NAME|MOTIF_POS|HIGH_INF_POS|MOTIF_SCORE_CHANGE|LoF|LoF_filter|LoF_flags|LoF_info"
     vep_categories = vep_categories.split('|')
-    #print(len(vep_categories))
     each_variant_df = pd.DataFrame(columns=['chrom', 'position', 'n_alt', 'qual', 'AC', 'AN', 'AF', 'AC_XY'] + vep_categories)
     
-    print('in the function')
-    #print(each_variant_df)
     for record in vcf_reader:
-        #pos = record.POS
-        #print(record)
-        #print(record.QUAL)
-        #if record.QUAL == "PASS":      #make it have to PASS the filter# : #above 1% #need to play around w this 
-        #positions.append(pos)
-        #n_alt.append(record.INFO['n_alt_alleles'])
-        #vep.append(record.INFO['vep'][0].split('|')[1])
-        #print(record.INFO["AF"])
-        #if record.INFO["AF"][0] > 0.005:
-        #print(record.FILTER)
-        #print(record.INFO['vep'][0])
-        #print(len(record.INFO['vep'][0].split('|')))
-        #print(record)
         list_of_values_for_row = [record.CHROM, record.POS, record.INFO['n_alt_alleles'], record.FILTER,  record.INFO['AC'][0], record.INFO['AN'] , record.INFO["AF"][0], record.INFO['AC_XY']] + record.INFO['vep'][0].split('|')
-        #print(list_of_values_for_row)
         each_variant_df.loc[len(each_variant_df)] = list_of_values_for_row
-        #print(record.FILTER)
-        #print(record.FORMAT)
-        #if record.FILTER == []:
-        #print('here')
-            
-        #new_row = pd.DataFrame([{'position':record.POS, 'n_alt':record.INFO['n_alt_alleles'], 'vep':record.INFO['vep'][0].split('|')[1], 'qual':record.FILTER, 'AF':record.INFO["AF"][0]}])
-        #print(new_row)
-        #each_variant_df = pd.concat([each_variant_df, new_row])
-            
-        #returning the NUMBER of bases that show variation, not the total number of variants (more like gnomad ?)
-   # print(each_variant_df)
+        
     return (each_variant_df)
 
 
     
-    
-    
-    
-
-
 all_variants = pd.DataFrame()
 
 summary_table = pd.DataFrame(columns=['gene', 'region', 'numbervar', 'seqlen'])

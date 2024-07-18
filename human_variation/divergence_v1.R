@@ -63,7 +63,7 @@ dist_dna_t_mac %<>% pivot_wider(values_from = "branchlen", names_from = 'type')
 dist_dna_t_mac$promoter_diverg <- dist_dna_t_mac$promoter #promoter
 dist_dna_t_mac$intron_diverg <- dist_dna_t_mac$intron
 
-polymorphism <- read.delim('/lab/solexa_page/hannah/1000genomes/polymorphism_gnomad_V4.txt')[,c(1,2,4)]  #polymorphism_gnomad.txt
+polymorphism <- read.delim('/lab/solexa_page/hannah/1000genomes/polymorphism_gnomad.txt')[,c(1,2,4)]  #polymorphism_gnomad_V4.txt
 polymorphism %<>% pivot_wider(values_from = "sum_v", names_from = 'region')
 polymorphism$promoter_polym <- polymorphism$promoter
 polymorphism$intron_polym <- polymorphism$intron
@@ -71,34 +71,33 @@ polymorphism$intron_polym <- polymorphism$intron
 merged <- merge(dist_dna_t_mac, polymorphism, by = "gene")
 
 
-#substitutions in promoters and introns - get the actual number ! 
-merged$cds_div <- merged$exon/ merged$intron_diverg
-merged$cds_poly <- merged$CDS/ merged$intron_polym
-merged$CDS_NI <- merged$cds_poly / merged$cds_div 
+simplified <- merged %>% filter(species2 == "mac") %>% na.omit() %>% group_by(gene) %>% mutate(sum_promoter_diverg = sum(promoter_diverg)) %>% mutate(sum_intron_diverg = sum(intron_diverg)) %>% select("gene", "sum_promoter_diverg", "sum_intron_diverg", "promoter_polym", "intron_polym") %>% distinct()
+results_df <- data.frame()
 
-merged$div <- merged$promoter_diverg/merged$intron_diverg
-merged$poly <- merged$promoter_polym/merged$intron_polym
-
-merged$NI <- merged$poly / merged$div 
-merged$gene1 <-merged$gene
-
-# DoS = D(n)/(D(n) + D(s)) - P(n)/(P(n) + P(s))
-merged$DOS <- (merged$promoter_diverg / (merged$promoter_diverg + merged$intron_diverg) )- (merged$promoter_polym/(merged$promoter_polym + merged$intron_polym))
-
+for (num_row in 1:nrow(simplified)){
   
-merged$alpha <- 1 - ((merged$intron_diverg * merged$promoter_polym) / (merged$promoter_diverg*merged$intron_polym))
-g_p <- read.delim(paste0(myPath, "/tables/g_p.txt")) %>% rename('gene' = 'gene.x')
+  one_line <- simplified[num_row,]
 
-merged <- merge(merged, g_p, by = "gene")
+  matrix <- matrix(c(one_line$sum_intron_diverg, one_line$sum_promoter_diverg, one_line$intron_polym, one_line$promoter_polym ), nrow = 2,
+ 	              dimnames =list(c("promoter", "intron"), c("divergence", "polymorphism")))
+ 
+  result <- fisher.test(matrix)
+  result$estimate
+  odds_ratio <- result$estimate
+  p_value <- result$p.value
+  conf_int_1 <- result$conf.int[1]
+  conf_int_2 <- result$conf.int[2]
+ 
+  new_df <- data.frame('odds_ratio' = odds_ratio, 'pval' = p_value, 'conf_low' = conf_int_1, 'conf_high' = conf_int_2)
 
-ggplot(merged, aes(x=gene1, y=NI, color = pair)) + 
-  geom_boxplot() + 
-  geom_point() +  
-  geom_hline(yintercept = 1, linetype = "dashed") + 
-  theme_pubr() + 
-  xlab("")
+  new_df1 <- cbind(one_line, new_df)
+  results_df <- rbind(results_df, new_df1)
+  
+}
 
+results_df$adj_pval <- p.adjust(results_df$pval, method = "BH")
 
+merge_res <- merge(results_df, g_p, by = "gene") 
 
 #plot ORs
 
@@ -107,8 +106,8 @@ merge_res$gene <- factor(merge_res$gene, levels = c("DDX3X", "DDX3Y", "EIF1AX", 
 merge_res$log2odds <- log2(merge_res$odds_ratio) 
 merge_res$conf_low <- log2(merge_res$conf_low)
 merge_res$conf_high <- log2(merge_res$conf_high)
-#pdf('/lab/solexa_page/hannah/1000genomes/CDS_NI.pdf', width = 5, height = 5)
-pdf('/lab/solexa_page/hannah/1000genomes/NI_log2_V4.pdf', width = 5, height = 5)
+
+pdf(paste0(myPath, '/CDS_NI.pdf', width = 5, height = 5)
 merge_res %>% 
 ggplot(aes(x=gene, y = (log2odds), color = type_of_gene)) + 
   geom_point() +  # Add points
@@ -119,26 +118,3 @@ ggplot(aes(x=gene, y = (log2odds), color = type_of_gene)) +
             size = 10, vjust = -1) + 
     geom_hline(yintercept = 0, linetype = "dashed", color = 'grey')  
 dev.off()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

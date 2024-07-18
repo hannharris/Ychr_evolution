@@ -11,13 +11,14 @@ library(BSgenome.Hsapiens.UCSC.hg38)
 
 
 #load files
+myPath <- #PATH TO GITHUB FOLDER 
 
-fimo_output <- read.delim("/lab/solexa_page/hannah/supp_info/tables/fimo-9.tsv") 
+fimo_output <- read.delim(paste0(myPath, "/tables/fimo-9.tsv")) 
 fimo_output$target <- sapply(strsplit(fimo_output$motif_id, "_"), "[[", 1)
 fimo_output <- fimo_output %>% filter(q.value <= 0.05) %>% select("target", "sequence_name", "start", "stop") 
 colnames(fimo_output) <- c("target", "chrom", "start", "end")
 
-p_bed <- read.delim("/lab/solexa_page/hannah/220516_mpra/helen_start_sites/fantom.bed", header = FALSE)
+p_bed <- read.delim(paste0(myPath, "/tables/xy_promoters.bed"), header = FALSE)
 
 
 #overlap promoters w TFs
@@ -42,7 +43,7 @@ colnames(full_merge) <- c("genes", "tfs", "seqnames", "start", "end", "width", "
 #how many binding sites are  on the promoter 
 
 
-promoters <- read.delim('/lab/solexa_page/hannah/220516_mpra/helen_start_sites/fantom.bed', header = FALSE)
+promoters <- read.delim(paste0(myPath,'/tables/xy_promoters.bed', header = FALSE)
 colnames(promoters) <- c('chr', 'start', 'end', 'gene')
 
 promoters_by_twenty <- data.frame("chr" = character(), "start" = numeric(), "end" = numeric(), "gene" = character())
@@ -58,7 +59,7 @@ for (rowix in (1:nrow(promoters))){
     start = end
 }}
 
-fimo_output <- read.delim("/lab/solexa_page/hannah/supp_info/tables/fimo-9.tsv")
+fimo_output <- read.delim(paste0(myPath, "/tables/fimo-9.tsv"))  
 fimo_output$target <- sapply(strsplit(fimo_output$motif_id, "_"), "[[", 1)
 fimo_output <- fimo_output %>% filter(q.value <= 0.05) %>% select("target", "sequence_name", "start", "stop") #only sig
 colnames(fimo_output) <- c("target", "chrom", "start", "end")
@@ -100,11 +101,11 @@ for (rowix in (1:nrow(promoters_by_twenty))){
       yes_or_no = 'yes'
       next
     }
-    if (overlapping_mark$start >= start){ #then it 
-      print('second if')
+    if (overlapping_mark$start >= start){  
+     
       num_bases_in_region <- end - overlapping_mark$start
-      if (num_bases_in_region > (width_mark/3)){ #(width_mark/2)
-        print('in here')
+      if (num_bases_in_region > (width_mark/3)){ 
+  
         fimo_output <- anti_join(fimo_output, overlapping_mark)  
         yes_or_no = 'yes'
         next 
@@ -138,7 +139,7 @@ df_nous <- data.frame('genes' = genes, 'binders' = binders)
 
 df_nous %<>% group_by(genes) %>% mutate(num_binders = n()) %>% select("genes", "num_binders") %>% unique()
 
-g_p <- read.delim("/lab/solexa_page/hannah/220516_mpra/g_p.txt") %>% rename('genes' = gene.x)
+g_p <- read.delim(paste0(myPath,"/tables/g_p.txt")) %>% rename('genes' = gene.x)  
 
 m_a_g_p <- merge(df_nous, g_p, by = "genes")
 
@@ -147,7 +148,7 @@ m_a_g_p_wide <- pivot_wider(m_a_g_p, id_cols = 'pair', names_from = 'type_of_gen
 stat.test <- wilcox.test(m_a_g_p_wide$X_gene, m_a_g_p_wide$Y_gene, paired = TRUE)
   stat.test$p.value
   
-pdf(file=(paste0("/lab/solexa_page/hannah/supp_info/figures/5D_tfs.pdf")), width=2.3, height=2.3, colormodel = "rgb")
+pdf(file=(paste0(myPath,"/tfs.pdf")), width=2.3, height=2.3, colormodel = "rgb")
 
 m_a_g_p %>% ggplot(aes(x = type_of_gene, y = num_binders)) + 
       geom_boxplot(width = 0.2) + 
@@ -164,11 +165,10 @@ dev.off()
 
 #motif overlap 
 
-g_p <- read.delim("/lab/solexa_page/hannah/220516_mpra/g_p.txt") %>% dplyr::rename('genes' = gene.x) %>% filter(pair != 'NLGN4X_NLGN4Y' &
+g_p <- read.delim(paste0(myPath,"/tables/g_p.txt")) %>% dplyr::rename('genes' = gene.x) %>% filter(pair != 'NLGN4X_NLGN4Y' &
                                                                                                                   pair != 'PRKX_PRKY' & 
                                                                                                                   pair != "TMSB4X_TMSB4Y" &
-                                                                                                                  pair != "TXLNG_TXLNGY")
-                                                                                                                 
+                                                                                                                  pair != "TXLNG_TXLNGY")                                                                                                             
 x_genes <- (g_p %>% filter(type_of_gene == "X_gene"))$genes
 y_genes <-   (g_p %>% filter(type_of_gene == "Y_gene"))$genes
 
@@ -254,7 +254,7 @@ pwc <- pwc %>%  add_xy_position(x = "is_homolog",dodge = 1,step.increase = .1)
 df_overlaps$is_homolog = factor(df_overlaps$is_homolog, levels=c('TRUE', 'FALSE', 'x_to_x', 'y_to_y')) 
 
 
-pdf(file=(paste0("/lab/solexa_page/hannah/supp_info/figures/S14_motif_overlaps.pdf")), width=5, height=5, colormodel = "rgb")
+pdf(file=(paste0(myPath, "/S14_motif_overlaps.pdf")), width=5, height=5, colormodel = "rgb")
 ggplot(df_overlaps, aes(x=is_homolog, y=percent)) +
   geom_violin() +
   geom_point() +
@@ -273,9 +273,9 @@ dev.off()
 # Load the hg38 genome
 genome <- BSgenome.Hsapiens.UCSC.hg38
 
-fib_mpra <-  read.delim("/lab/solexa_page/hannah/supp_info/tables/50bp_bed_test_counts_fullfib.txt") %>% filter(chr != "chr6" & chr != "chr7" & chr != "cmv")
+fib_mpra <-  read.delim(paste0(myPath, "/50bp_bed_test_counts_fullfib.txt")) %>% filter(chr != "chr6" & chr != "chr7" & chr != "cmv")
 fib_mpra$coords <- paste0(fib_mpra$chr, ":", fib_mpra$start, "-", fib_mpra$end)
-genes_mpra <- read.delim("/lab/solexa_page/hannah/supp_info/tables/full_fib_50_1.txt") %>% select(c("coords", "gene")) %>% filter(gene != "USP9Yb" & gene != "PRKX"
+genes_mpra <- read.delim(paste0(myPath, "/full_fib_50_1.txt")) %>% select(c("coords", "gene")) %>% filter(gene != "USP9Yb" & gene != "PRKX"
                        & gene != "PRKY"
                        & gene != "NLGN4X"
                        & gene != "NLGN4Y"
@@ -285,19 +285,18 @@ genes_mpra <- read.delim("/lab/solexa_page/hannah/supp_info/tables/full_fib_50_1
                        & gene != "TXLNGY" 
                        &  gene != "TSPY1")
 full_fib <- merge(fib_mpra, genes_mpra, by = "coords")
-  #"/lab/solexa_page/hannah/220516_mpra/full_fib_distance_cropped.txt")
 
 get_gc <- function(chromosome, start_coord, end_coord) {
+ #gets GC content of a sequence
   # Create a GenomicRanges object
-gr <- GRanges(seqnames = chromosome, ranges = IRanges(start = start_coord, end = end_coord))
+  gr <- GRanges(seqnames = chromosome, ranges = IRanges(start = start_coord, end = end_coord))
 
-# Extract the sequence
-sequence <<- getSeq(genome, gr)
+  # Extract the sequence
+  sequence <<- getSeq(genome, gr)
 
-gc_content <- ((oligonucleotideFrequency(sequence, width = 1)[1,][2] + oligonucleotideFrequency(sequence, width = 1)[1,][3]) / sum(oligonucleotideFrequency(sequence, width = 1)[1,])) *100
+  gc_content <- ((oligonucleotideFrequency(sequence, width = 1)[1,][2] + oligonucleotideFrequency(sequence, width = 1)[1,][3]) / sum(oligonucleotideFrequency(sequence, width = 1)[1,])) *100
 
-return(unname(gc_content))
-
+  return(unname(gc_content))
 }
 
 gcs <- c()
@@ -314,10 +313,9 @@ full_fib$gc <- gcs
 
 #correlate num motifs w activity 
 
-
-fib_mpra <-  read.delim("/lab/solexa_page/hannah/supp_info/tables/50bp_bed_test_counts_fullfib.txt") %>% filter(chr != "chr6" & chr != "chr7" & chr != "cmv")
+fib_mpra <-  read.delim(paste0(myPath, "/tables/50bp_bed_test_counts_fullfib.txt") %>% filter(chr != "chr6" & chr != "chr7" & chr != "cmv")
 fib_mpra$coords <- paste0(fib_mpra$chr, ":", fib_mpra$start, "-", fib_mpra$end)
-genes_mpra <- read.delim("/lab/solexa_page/hannah/supp_info/tables/full_fib_50_1.txt") %>% select(c("coords", "gene")) %>% filter(gene != "USP9Yb" & gene != "PRKX"
+genes_mpra <- read.delim(paste0(myPath, "/tables/full_fib_50_1.txt") %>% select(c("coords", "gene")) %>% filter(gene != "USP9Yb" & gene != "PRKX"
                        & gene != "PRKY"
                        & gene != "NLGN4X"
                        & gene != "NLGN4Y"
@@ -331,7 +329,7 @@ fib_mpra <- merge(fib_mpra, genes_mpra, by = "coords")
 #fib_mpra <- fib_mpra %>% filter(distance <= 0)
 fib_mpra$gene_log2 <- paste(fib_mpra$gene, fib_mpra$log2, sep = "_")
 
-fimo_output <- read.delim("/lab/solexa_page/hannah/supp_info/tables/fimo-10_mpra.tsv") 
+fimo_output <- read.delim(paste0(myPath, "/tables/fimo-10_mpra.tsv") 
 fimo_output$target <- sapply(strsplit(fimo_output$motif_id, "_"), "[[", 1)
 fimo_output <- fimo_output %>% filter(q.value <= 0.05) %>% select("target", "sequence_name", "start", "stop") 
 colnames(fimo_output) <- c("target", "chrom", "start", "end")
@@ -363,7 +361,7 @@ full_merge_a_1 <- str_split(full_merge_a$genes, pattern = "_")
 full_merge_a <- cbind(as.data.frame(do.call(rbind, full_merge_a_1)),full_merge_a) 
 colnames(full_merge_a) <- c("gene",'log2', 'gene_log2','num_tf')
 full_merge_a <- rbind(full_merge_a, not_in_merge)
-g_p <- read.delim("/lab/solexa_page/hannah/220516_mpra/g_p.txt") 
+g_p <- read.delim(paste0(myPath, "/g_p.txt") 
 colnames(g_p) <- c("gene",'pair', 'type_of_gene')
 
 m_a_g_p <- merge(full_merge_a, g_p, by = "gene")
@@ -371,11 +369,11 @@ m_a_g_p$log2 <- as.numeric(m_a_g_p$log2)
 
 full_fib$gene_log2 <- paste(full_fib$gene, full_fib$log2, sep = "_") 
 
-full_fib1 <- full_fib %>% select("gene_log2", "gc") #from /lab/solexa_page/hannah/220516_mpra/gc_vs_activity.Rmd
+full_fib1 <- full_fib %>% select("gene_log2", "gc") 
 
 m_a_g_p <- left_join(m_a_g_p, full_fib1, by = "gene_log2")
 
-pdf(file=(paste0("/lab/solexa_page/hannah/supp_info/figures/S15.pdf")), width=5, height=5, colormodel = "rgb")
+pdf(file=(paste0(myPath, "/S15.pdf")), width=5, height=5, colormodel = "rgb")
 m_a_g_p %>% ggplot(aes(x = gc  , y = num_tf , color = log2)) + #color = type_of_gene
   #facet_wrap(~gene.x) + 
   geom_point(alpha = 0.5, stroke = 0) + 
@@ -388,7 +386,7 @@ m_a_g_p %>% ggplot(aes(x = gc  , y = num_tf , color = log2)) + #color = type_of_
   scale_color_gradient(low = "blue", high = "red") 
 dev.off()
 
-pdf(file=(paste0("/lab/solexa_page/hannah/supp_info/figures/S15B.pdf")), width=5, height=5, colormodel = "rgb")
+pdf(file=(paste0(myPath, "/S15B.pdf")), width=5, height=5, colormodel = "rgb")
 
 m_a_g_p %>% ggplot(aes(x = log2  , y = gc , color = num_tf)) + #color = type_of_gene
   #facet_wrap(~gene.x) + 
@@ -402,7 +400,7 @@ m_a_g_p %>% ggplot(aes(x = log2  , y = gc , color = num_tf)) + #color = type_of_
   scale_color_gradient(low = "blue", high = "red") 
 dev.off()
 
-pdf(file=(paste0("/lab/solexa_page/hannah/supp_info/figures/5C_new_gc.pdf")), width=2.5, height=2.5, colormodel = "rgb")
+pdf(file=(paste0(myPath, "/5C_new_gc.pdf")), width=2.5, height=2.5, colormodel = "rgb")
 
 m_a_g_p %>% ggplot(aes(x = gc  , y = log2 , color = type_of_gene)) + #color = type_of_gene
   #facet_wrap(~gene.x) + 
@@ -413,22 +411,9 @@ m_a_g_p %>% ggplot(aes(x = gc  , y = log2 , color = type_of_gene)) + #color = ty
   #xlim(0,100) + 
   stat_cor(method = "pearson", label.y = -2, label.x= 80)  + 
   geom_smooth(method='lm', formula= y~x, se= FALSE) + 
-#+ 
-scale_colour_manual(values = c("#e46915", "#857bc6"))
+  scale_colour_manual(values = c("#e46915", "#857bc6"))
 dev.off()
 
-# correlation_result <- cor.test(m_a_g_p$log2, m_a_g_p$gc, method = "pearson")
-# 
-# p_value <- correlation_result$p.value
 
-# m_a_g_p %>%
-#   ggplot(aes(x = log2, y = gc, color = type_of_gene)) +
-#   geom_point(alpha = 0.5, stroke = 0) +
-#   ylab('G+C content') +
-#   xlab("log2(RNA/DNA)") +
-#   theme_pubr() +
-#   geom_smooth(method='lm', formula= y ~ x, se = FALSE) +
-#   scale_colour_manual(values = c("#e46915", "#857bc6")) +
-#   annotate("text", x = -2, y = 80, label = paste("p-value =", format(p_value, scientific = TRUE)))
 
 

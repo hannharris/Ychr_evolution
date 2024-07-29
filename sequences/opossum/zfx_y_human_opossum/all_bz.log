@@ -1,6 +1,0 @@
-blastzWrapper humanmasked_X humanmasked_Y Y=9000 H=0  | lav2maf /dev/stdin humanmasked_X humanmasked_Y | maf_sort /dev/stdin humanmasked_X > humanmasked_X.humanmasked_Y.orig.maf
-blastzWrapper humanmasked_X opossum Y=9000 H=0  | lav2maf /dev/stdin humanmasked_X opossum | maf_sort /dev/stdin humanmasked_X > humanmasked_X.opossum.orig.maf
-blastzWrapper humanmasked_Y opossum Y=9000 H=0  | lav2maf /dev/stdin humanmasked_Y opossum | maf_sort /dev/stdin humanmasked_Y > humanmasked_Y.opossum.orig.maf
-single_cov2 humanmasked_X.humanmasked_Y.orig.maf  > humanmasked_X.humanmasked_Y.sing.maf
-single_cov2 humanmasked_X.opossum.orig.maf  > humanmasked_X.opossum.sing.maf
-single_cov2 humanmasked_Y.opossum.orig.maf  > humanmasked_Y.opossum.sing.maf

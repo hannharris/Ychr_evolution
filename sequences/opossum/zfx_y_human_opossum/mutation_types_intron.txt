@@ -1,7 +1,0 @@
-,X,Y
-CG_AT,2,6
-CG_GC,1,1
-CG_TA,5,8
-TA_AT,3,9
-TA_CG,8,12
-TA_GC,4,2

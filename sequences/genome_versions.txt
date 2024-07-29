@@ -1,0 +1,11 @@
+chimp: Pan_tro_3.0 https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_000001515.7/ 
+
+orangutan: https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_028885625.1/ 
+
+gorilla: https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_029281585.1/ 
+
+pileated gibbon: https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_021498465.1/
+
+macaque: Mmul_10 https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_003339765.1/ 
+
+marmoset: mCalJac1.pat.X https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_011100555.1/ 

@@ -1,0 +1,119 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+h_o <- read.delim("/lab/solexa_page/hannah/220516_mpra/msa/long_alignments/multiz_dog_bull/opossum/zfx_y_human_opossum/mutation_types.txt", sep = ",")
+colnames(h_o) <- c("mut_types", "X", "Y")
+
+# new_row <- c("total", sum(h_o$X), sum(h_o$Y ))
+# 
+# h_o$X_total <- 271 #sum(h_o$X)
+# h_o$Y_total <- 271 #sum(h_o$Y)
+
+h_o$A_total <- 67 #sum(h_o$X)
+h_o$C_total <- 204 #sum(h_o$Y)
+
+
+h_ocg <- h_o[1:3,]
+h_ocg$perc_X <- (h_ocg$X / h_ocg$C_total)*100
+h_ocg$perc_Y <- (h_ocg$Y / h_ocg$C_total)*100
+
+
+h_oat <- h_o[4:6,]
+h_oat$perc_X <- (h_oat$X / h_oat$A_total)*100
+h_oat$perc_Y <- (h_oat$Y / h_oat$A_total)*100
+
+h_o <- rbind(h_ocg, h_oat)
+
+# h_o$perc_X <- (h_o$X / h_o$X_total)*100
+# 
+# h_o$perc_Y <- (h_o$Y / h_o$Y_total) *100
+
+h_o <- h_o[,c(1,6,7)]
+# row.names(h_o) <- h_o$mut_types
+# h_o$mut_types <- NULL
+  
+```
+#graph
+```{r}
+
+h_o1 <- as.data.frame(t(as.matrix(h_o)))
+
+h_o2 <- h_o %>% pivot_longer(cols = c(2,3))
+
+ggplot(h_o2, aes(x=mut_types, y = value)) + 
+  geom_col() +
+  facet_wrap(~name)
+
+#pdf(file=("/lab/solexa_page/hannah/supp_info/figures/1_opossum_ZFX_muttypes.pdf"), width=3, height=3, colormodel = "rgb")
+
+ggplot(h_o2, aes(x=mut_types, y = value, fill = name)) + 
+  geom_col(position = "dodge", width = 0.5) +
+  theme_pubr() + 
+  ylab("substitution type percent")+
+    theme(legend.position = "none") 
+
+dev.off()
+
+pdf(file=("/lab/solexa_page/hannah/supp_info/figures/1_opossum_ZFX_muttypes_normalized.pdf"), width=3, height=3, colormodel = "rgb")
+
+ggplot(h_o2, aes(x=mut_types, y = value, fill = name)) + 
+  geom_col(position = "dodge", width = 0.5) +
+  theme_pubr() + 
+  ylab("substitution type percent")+
+    theme(legend.position = "none") 
+
+dev.off()
+
+```
+#exons/introns
+```{r}
+
+h_o <- read.delim("/lab/solexa_page/hannah/220516_mpra/msa/long_alignments/multiz_dog_bull/opossum/zfx_y_human_opossum/mutation_types_intron.txt", sep = ",")
+colnames(h_o) <- c("mut_types", "X", "Y")
+
+# new_row <- c("total", sum(h_o$X), sum(h_o$Y ))
+# 
+# h_o$X_total <- 305#sum(h_o$X)
+# h_o$Y_total <- 305#sum(h_o$Y)
+
+
+h_o$A_total <- 210 #sum(h_o$X)
+h_o$C_total <- 95 #sum(h_o$Y)
+#
+h_ocg <- h_o[1:3,]
+h_ocg$perc_X <- (h_ocg$X / h_ocg$C_total)*100
+h_ocg$perc_Y <- (h_ocg$Y / h_ocg$C_total)*100
+#
+#
+h_oat <- h_o[4:6,]
+h_oat$perc_X <- (h_oat$X / h_oat$A_total)*100
+h_oat$perc_Y <- (h_oat$Y / h_oat$A_total)*100
+#
+h_o <- rbind(h_ocg, h_oat)
+
+# h_o$perc_X <- (h_o$X / h_o$X_total) *100
+# h_o$perc_Y <- (h_o$Y / h_o$Y_total) *100
+
+h_o <- h_o[,c(1,6,7)]
+
+h_o1 <- as.data.frame(t(as.matrix(h_o)))
+
+h_o2 <- h_o %>% pivot_longer(cols = c(2,3))
+
+ggplot(h_o2, aes(x=mut_types, y = value, fill = name)) + 
+  geom_col(position = "dodge", width = 0.5) +
+  theme_pubr() + 
+  ylab("substitution type percent") +
+    #theme(legend.position = "none")   +
+  scale_fill_manual(values = c("#DE8034", "#7772AF"))
+
+
+```
+
+
+
+
+

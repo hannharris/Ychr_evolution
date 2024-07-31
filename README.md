@@ -18,7 +18,8 @@ Generate annotation files by running:
   1. alignments/get_gtf_git.ipynb
   2. alignments/gene_by_gene_gtf.R
 
-Figure 1,2,: X vs Y homolog sequence comparisons, Y promoters have lost G+C content 
+Figure 1,2,: 
+X vs Y homolog sequence comparisons, Y promoters have lost G+C content 
  generate alignment, calculate % alignment, calculate GC % content:  alignments/pair_align_multiz_final_git.ipynb
  generate figures: /GC_analysis/f1_graphs.R
 

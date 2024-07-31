@@ -14,12 +14,11 @@ Each folder contains code and processed data that may be used to recreate one or
 software versions used: 
 analyses were conducted using either Python (v3.8.10) or R (v4.1.0 or v4.2.0). Software packages used in Python included Bio (v1.76), pandas (v1.4.2), pyranges (v0.0.79), genomicranges (v0.2.11), and gtfparse. Software packages used in R included GenomicRanges (v1.46.1), seqinr (v4.2-8), dplyr (v1.0.7), ggpubr (v0.4.0), stringr (v1.4.0), ape (v5.6), BSgenome (v1.62.0), tidyr (v1.1.4), ggplot2 (v3.3.5), ggrepel (v0.9.1), rstatix (v0.7.0), gt (v0.10.1), edgeR (v3.36.0), and purrr (v0.3.4).
 
-Generate annotation files:
- Run:
+Generate annotation files by running:
   1. alignments/get_gtf_git.ipynb
   2. alignments/gene_by_gene_gtf.R
 
-Figure 1,2,: ## X vs Y homolog sequence comparisons, ## Y promoters have lost G+C content 
+Figure 1,2,: X vs Y homolog sequence comparisons, Y promoters have lost G+C content 
  generate alignment, calculate % alignment, calculate GC % content:  alignments/pair_align_multiz_final_git.ipynb
  generate figures: /GC_analysis/f1_graphs.R
 

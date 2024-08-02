@@ -1,14 +1,8 @@
----
-title: "R Notebook"
-output: html_notebook
----
 
-```{r}
+
 myPath <- #PATH TO GITHUB FOLDER
 
-```
 
-```{r}
 h_o <- read.delim(paste0(myPath, "/tables/mutation_types_ZFX_promoter.txt"), sep = ",")
 colnames(h_o) <- c("mut_types", "X", "Y")
 
@@ -34,9 +28,9 @@ h_o <- rbind(h_ocg, h_oat)
 
 h_o <- h_o[,c(1,6,7)]
 
-```
+
 #graph
-```{r}
+
 
 h_o1 <- as.data.frame(t(as.matrix(h_o)))
 
@@ -55,9 +49,9 @@ dev.off()
 
 
 
-```
+
 #introns
-```{r}
+
 
 h_o <- read.delim(paste0(myPath, "/tables/mutation_types_ZFX_intron.txt"), sep = ",")
 colnames(h_o) <- c("mut_types", "X", "Y")
@@ -91,7 +85,7 @@ ggplot(h_o2, aes(x=mut_types, y = value, fill = name)) +
   scale_fill_manual(values = c("#DE8034", "#7772AF"))
 
 
-```
+
 
 
 

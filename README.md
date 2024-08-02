@@ -51,7 +51,11 @@ analyses were conducted using either Python (v3.8.10) or R (v4.1.0 or v4.2.0). S
 
   make figure 4B, negative selection testing: 
   * human_variation
-  * 
+  * human_variation/pull_vcf_info.py to make VCF files per gene/region 
+  * human_variation/make_bedfiles.R to make bedfiles of gene regions
+  * human_variation/get_regions.py and human_variation/get_regions.sh to make csv of all variants per gene/region
+  * human_variation/re_analysis_0206.R to generate file of variant counts per gene/region
+  * human_variation/divergence_v1.R to compare to between species variation and generate graph
 
 
 

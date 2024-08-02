@@ -1,0 +1,3 @@
+bed2fasta -s -both -o 50bp_bed_test_counts_fullfib_forfimo.txt.fa 50bp_bed_test_counts_fullfib_forfimo.txt /data/apache-tomcat/instance/meme/work/meme-data/fasta_databases/UCSCMammal/hg38.fna
+
+fimo --oc . --verbosity 1 --bgfile --nrdb-- --thresh 1.0E-4 HOCOMOCOv11_core_HUMAN_mono_meme_format.txt 50bp_bed_test_counts_fullfib_forfimo.txt.fa

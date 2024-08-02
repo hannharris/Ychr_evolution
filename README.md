@@ -29,6 +29,16 @@ analyses were conducted using either Python (v3.8.10) or R (v4.1.0 or v4.2.0). S
  make figures:
  * GC_analysis/f1_graphs.R
 
+
+ ## ZFX promoter evolution: 
+
+  human-opossum alignment: 
+  * ZFX_promoter_evolution/align_humanopossum_zfx.py
+ 
+  make figures:
+  * ZFX_promoter_evolution/human_opossum_graphs_git.Rmd
+
+
 ## Figure 3 + supplement: Multi-species alignments reveal faster rate of Y evolution 
 
  generate primate alignment: 
@@ -93,13 +103,6 @@ analyses were conducted using either Python (v3.8.10) or R (v4.1.0 or v4.2.0). S
 
  * pair_gene_expression/plot_tpms_v1_git.Rmd 
  
-## ZFX promoter evolution: 
-
-  human-opossum alignment: 
-  * ZFX_promoter_evolution/align_humanopossum_zfx.py
- 
-  make figures:
-  * ZFX_promoter_evolution/human_opossum_graphs_git.Rmd
 
 
 

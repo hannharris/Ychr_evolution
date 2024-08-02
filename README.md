@@ -29,8 +29,7 @@ analyses were conducted using either Python (v3.8.10) or R (v4.1.0 or v4.2.0). S
  make figures:
  * GC_analysis/f1_graphs.R
 
-
- ## ZFX promoter evolution: 
+ZFX promoter evolution: 
 
   human-opossum alignment: 
   * ZFX_promoter_evolution/align_humanopossum_zfx.py

@@ -60,10 +60,10 @@ analyses were conducted using either Python (v3.8.10) or R (v4.1.0 or v4.2.0). S
 ## Figure 5: Quantitative assessment of promoter activity
 
   make pool of elements
-  *mpra_design/makeElementPool_HH_new.py
+  * mpra_design/makeElementPool_HH_new.py
 
   associate barcodes with candidate regulatory sequences (CRSs)
-  *mpra_design/new_mpra_pipeline.sh
+  * mpra_design/new_mpra_pipeline.sh
 
   run count pipeline: 
   *mpra_design/count_pipeline.sh
@@ -71,35 +71,35 @@ analyses were conducted using either Python (v3.8.10) or R (v4.1.0 or v4.2.0). S
 ## Figure 6: mpra analysis
 
   get distance of each start site to CRS start: 
-  *mpra_analysis/distance_calcs_TSS_git.ipynb
+  * mpra_analysis/distance_calcs_TSS_git.ipynb
 
   mpra functions: 
-  *mpra_analysis/mpra_functions.R
+  * mpra_analysis/mpra_functions.R
 
   make mpra figures: 
-  *mpra_analysis/mpra_final.R
+  * mpra_analysis/mpra_final.R
 
 ## Figure 7: 
  get number of genes: 
- *pair_gene_expression/fig7.R
+ * pair_gene_expression/fig7.R
 
 ## Supplement TF analysis: 
 
  figures and analysis: 
- *TF_analysis/TF_analysis.R
+ * TF_analysis/TF_analysis.R
 
 
 ## Supplement gene expression: 
 
- *pair_gene_expression/plot_tpms_v1_git.Rmd 
+ * pair_gene_expression/plot_tpms_v1_git.Rmd 
  
 ## ZFX promoter evolution: 
 
   human-opossum alignment: 
-  *ZFX_promoter_evolution/align_humanopossum_zfx.py
+  * ZFX_promoter_evolution/align_humanopossum_zfx.py
  
   make figures:
-  *ZFX_promoter_evolution/human_opossum_graphs_git.Rmd
+  * ZFX_promoter_evolution/human_opossum_graphs_git.Rmd
 
 
 

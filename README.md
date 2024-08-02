@@ -29,7 +29,6 @@ analyses were conducted using either Python (v3.8.10) or R (v4.1.0 or v4.2.0). S
  make figures:
  * GC_analysis/f1_graphs.R
 
- 
 ## Figure 3 + supplement: Multi-species alignments reveal faster rate of Y evolution 
 
  generate primate alignment: 
@@ -55,12 +54,45 @@ analyses were conducted using either Python (v3.8.10) or R (v4.1.0 or v4.2.0). S
   * human_variation/make_bedfiles.R to make bedfiles of gene regions
   * human_variation/get_regions.py and human_variation/get_regions.sh to make csv of all variants per gene/region
   * human_variation/re_analysis_0206.R to generate file of variant counts per gene/region
-  * human_variation/divergence_v1.R to compare to between species variation and generate graph
+  * human_variation/divergence_v1.R to compare to between species variation and generate figure 
 
 
+## Figure 5: Quantitative assessment of promoter activity
+
+  make pool of elements
+  *mpra_design/makeElementPool_HH_new.py
+
+  associate barcodes with candidate regulatory sequences (CRSs)
+  *mpra_design/new_mpra_pipeline.sh
+
+  run count pipeline: 
+  *mpra_design/count_pipeline.sh
+
+## Figure 6: mpra analysis
+
+  get distance of each start site to CRS start: 
+  *mpra_analysis/distance_calcs_TSS_git.ipynb
+
+  mpra functions: 
+  *mpra_analysis/mpra_functions.R
+
+  make mpra figures: 
+  *mpra_analysis/mpra_final.R
+
+## Figure 7: 
+ get number of genes: 
+ *pair_gene_expression/fig7.R
+
+## Supplement TF analysis: 
+
+ figures and analysis: 
+ *TF_analysis/TF_analysis.R
 
 
+## Supplement gene expression: 
 
+
+## ZFX promoter evolution: 
 
 
 

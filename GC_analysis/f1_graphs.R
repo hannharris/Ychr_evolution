@@ -29,6 +29,17 @@ perc <- perc %>% filter(pair != "NLGN4X_NLGN4Y" & pair != "TXLNG_TXLNGY" & pair 
 
 perc_scramble <- read.delim(paste0(myPath, "/tables/percent_alignment_scramble.csv", sep = ",")[2:4]
 
+#GC differences significance test
+gc_metrics %>%
+  group_by(region) %>%
+  shapiro_test(difference_in_gc)
+
+#group_by(gene) %>%
+stat.test <- gc_metrics %>% filter(GC_perc > 0 ) %>% ungroup %>% 
+  wilcox_test(difference_in_gc ~ region) %>%
+  add_significance()
+
+                            
 #GC graphs
 
 stat.test <- gc %>% filter(GC_perc > 0 ) %>% group_by(region) %>%
